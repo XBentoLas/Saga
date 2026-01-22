@@ -69,3 +69,40 @@ def delete_horario(id):
         return jsonify({"success": True, "data": {"message": "Horário deletado com sucesso"}}), 200
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
+
+@horario_bp.route('/<int:id>/professores', methods=['GET'])
+def get_horario_professores(id):
+    try:
+        professores = HorarioService.get_professores(id)
+        if professores is None:
+            return jsonify({"success": False, "error": "Horário não encontrado"}), 404
+        return jsonify({"success": True, "data": professores}), 200
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@horario_bp.route('/<int:id>/professores', methods=['POST'])
+def add_professor_to_horario(id):
+    try:
+        data = request.get_json()
+        if not data or 'idProfessor' not in data:
+            return jsonify({"success": False, "error": "idProfessor é obrigatório"}), 400
+        
+        result = HorarioService.add_professor(id, data['idProfessor'])
+        return jsonify({"success": True, "data": result}), 201
+    except ValueError as e:
+        return jsonify({"success": False, "error": str(e)}), 400
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@horario_bp.route('/<int:id>/professores/<int:id_professor>', methods=['DELETE'])
+def remove_professor_from_horario(id, id_professor):
+    try:
+        result = HorarioService.remove_professor(id, id_professor)
+        if not result:
+            return jsonify({"success": False, "error": "Associação não encontrada"}), 404
+        return jsonify({"success": True, "data": {"message": "Professor removido do horário com sucesso"}}), 200
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
