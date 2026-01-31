@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Define o diretório base do projeto (pasta api/)
 BASE_DIR = Path(__file__).resolve().parent
 
 class Config:
@@ -22,7 +21,6 @@ class Config:
         DB_NAME = os.getenv("db_name", "saga")
         SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
     else:
-        # Banco SQLite será criado em api/instance/saga.db
         INSTANCE_DIR = BASE_DIR / "instance"
         INSTANCE_DIR.mkdir(exist_ok=True)
         SQLALCHEMY_DATABASE_URI = f"sqlite:///{INSTANCE_DIR / 'saga.db'}"

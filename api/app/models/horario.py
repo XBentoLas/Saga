@@ -28,7 +28,7 @@ class Horario(db.Model):
             "id": self.IdHorario,
             "turno": self.turno.value if self.turno else None,
             "ordem": self.ordem,
-            "horaInicio": str(self.HoraInicio),
-            "horaFim": str(self.HoraFim),
+            "horaInicio": self.HoraInicio.strftime("%H:%M") if self.HoraInicio else None,
+            "horaFim": self.HoraFim.strftime("%H:%M") if self.HoraFim else None,
             "descricao": self.descricao
         }

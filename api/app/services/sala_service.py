@@ -1,4 +1,6 @@
 from ..repositories.sala_repository import SalaRepository
+from ..models.agendamento import Agendamento
+from .. import db
 
 
 class SalaService:
@@ -54,6 +56,10 @@ class SalaService:
             if not sala:
                 return False
             
+            Agendamento.query.filter_by(IdSala=id).delete()
+            db.session.commit()
+            
             return SalaRepository.delete(id)
         except Exception as e:
+            db.session.rollback()
             raise Exception(f"Erro ao deletar sala: {str(e)}")

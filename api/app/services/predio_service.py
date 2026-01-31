@@ -1,4 +1,7 @@
 from ..repositories.predio_repository import PredioRepository
+from ..models.sala import Sala
+from ..models.agendamento import Agendamento
+from .. import db
 
 
 class PredioService:
@@ -54,6 +57,16 @@ class PredioService:
             if not predio:
                 return False
             
+            salas = Sala.query.filter_by(IdPredio=id).all()
+            
+            for sala in salas:
+                Agendamento.query.filter_by(IdSala=sala.IdSala).delete()
+            
+            Sala.query.filter_by(IdPredio=id).delete()
+            
+            db.session.commit()
+            
             return PredioRepository.delete(id)
         except Exception as e:
+            db.session.rollback()
             raise Exception(f"Erro ao deletar prédio: {str(e)}")

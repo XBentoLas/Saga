@@ -33,12 +33,14 @@ class HorarioService:
                     raise ValueError(f"Campo obrigatório ausente: {field}")
             
             if isinstance(data.get('HoraInicio'), str):
-                h, m = data['HoraInicio'].split(':')
-                data['HoraInicio'] = time(int(h), int(m))
+                parts = data['HoraInicio'].split(':')
+                h, m = int(parts[0]), int(parts[1])
+                data['HoraInicio'] = time(h, m)
             
             if isinstance(data.get('HoraFim'), str):
-                h, m = data['HoraFim'].split(':')
-                data['HoraFim'] = time(int(h), int(m))
+                parts = data['HoraFim'].split(':')
+                h, m = int(parts[0]), int(parts[1])
+                data['HoraFim'] = time(h, m)
             
             horario = HorarioRepository.create(data)
             return horario.to_dict()
@@ -55,12 +57,14 @@ class HorarioService:
                 return None
             
             if isinstance(data.get('HoraInicio'), str):
-                h, m = data['HoraInicio'].split(':')
-                data['HoraInicio'] = time(int(h), int(m))
+                parts = data['HoraInicio'].split(':')
+                h, m = int(parts[0]), int(parts[1])
+                data['HoraInicio'] = time(h, m)
             
             if isinstance(data.get('HoraFim'), str):
-                h, m = data['HoraFim'].split(':')
-                data['HoraFim'] = time(int(h), int(m))
+                parts = data['HoraFim'].split(':')
+                h, m = int(parts[0]), int(parts[1])
+                data['HoraFim'] = time(h, m)
             
             updated_horario = HorarioRepository.update(id, data)
             return updated_horario.to_dict()
